@@ -1,0 +1,95 @@
+[System]
+Name='symptomsAMS'
+Type='mamdani'
+Version=2.0
+NumInputs=8
+NumOutputs=1
+NumRules=9
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='travel to high altitude'
+Range=[0 5]
+NumMFs=3
+MF1='recent':'trimf',[-2.08333333333333 0 2.08333333333333]
+MF2='a while ago':'trimf',[0.416666666666667 2.5 4.58333333333333]
+MF3='never':'trimf',[2.91666666666667 5 7.08333333333333]
+
+[Input2]
+Name='shortness of breath'
+Range=[0 5]
+NumMFs=3
+MF1='high':'trimf',[-2.08333333333333 0 2.08333333333333]
+MF2='med':'trimf',[0.416666666666667 2.5 4.58333333333333]
+MF3='low':'trimf',[2.91666666666667 5 7.08333333333333]
+
+[Input3]
+Name='headache'
+Range=[0 5]
+NumMFs=3
+MF1='high':'trimf',[-2.08333333333333 0 2.08333333333333]
+MF2='med':'trimf',[0.416666666666667 2.5 4.58333333333333]
+MF3='low':'trimf',[2.91666666666667 5 7.08333333333333]
+
+[Input4]
+Name='fatigue'
+Range=[0 5]
+NumMFs=3
+MF1='high':'trimf',[0 0.5 1]
+MF2='med':'trimf',[0 0.5 1]
+MF3='low':'trimf',[0 0.5 1]
+
+[Input5]
+Name='nausea'
+Range=[0 5]
+NumMFs=3
+MF1='high':'trimf',[0 2.5 5]
+MF2='med':'trimf',[0 2.5 5]
+MF3='mf3':'trimf',[0 2.5 5]
+
+[Input6]
+Name='vomiting'
+Range=[0 5]
+NumMFs=3
+MF1='high':'trimf',[0 2.5 5]
+MF2='med':'trimf',[0 2.5 5]
+MF3='low':'trimf',[0 2.5 5]
+
+[Input7]
+Name='rapid heart rate'
+Range=[0 5]
+NumMFs=3
+MF1='high':'trimf',[0 2.5 5]
+MF2='med':'trimf',[0 2.5 5]
+MF3='low':'trimf',[0 2.5 5]
+
+[Input8]
+Name='insomnia'
+Range=[0 5]
+NumMFs=3
+MF1='high':'trimf',[0 2.5 5]
+MF2='mf2':'trimf',[0 2.5 5]
+MF3='low':'trimf',[0 2.5 5]
+
+[Output1]
+Name='output1'
+Range=[0 1]
+NumMFs=3
+MF1='mf1':'trimf',[-0.416666666666667 0 0.416666666666667]
+MF2='mf2':'trimf',[0.0833333333333333 0.5 0.916666666666667]
+MF3='mf3':'trimf',[0.583333333333333 1 1.41666666666667]
+
+[Rules]
+1 1 0 0 0 0 0 0, 1 (1) : 1
+2 1 0 0 0 0 0 0, 1 (1) : 1
+3 1 0 0 0 0 0 0, 1 (1) : 1
+1 2 0 0 0 0 0 0, 1 (1) : 1
+2 2 0 0 0 0 0 0, 1 (1) : 1
+3 2 0 0 0 0 0 0, 1 (1) : 1
+1 3 0 0 0 0 0 0, 1 (1) : 1
+2 3 0 0 0 0 0 0, 1 (1) : 1
+3 3 0 0 0 0 0 0, 1 (1) : 1

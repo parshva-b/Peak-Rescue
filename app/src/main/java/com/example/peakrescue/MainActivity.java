@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 if (isNetworkAvailable()) {
                     // Replace with your API endpoint URL
-                    String apiUrl = "https://api.tomorrow.io/v4/weather/realtime?location=42.3478,%20-71.0466&apikey=q4q65zHUQWmCS4w8MurpkU6JJewJhi5H";
+                    String apiUrl = "https://api.tomorrow.io/v4/timelines?location=42.3478,-71.0466&fields=temperature,weatherCode,precipitationProbability,windSpeed,uvIndex,visibility&startTime=2023-12-01T00:00:00Z&endTime=2023-12-01T23:59:59Z&timezone=America/New_York&apikey=q4q65zHUQWmCS4w8MurpkU6JJewJhi5H";
                     Log.d("url: ", apiUrl);
                     URL url = new URL(apiUrl);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Peak Rescue</string>
+    <string name="get_altitude">Get Altitude</string>
+</resources>

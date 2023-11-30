@@ -1,0 +1,79 @@
+[System]
+Name='Trek_final_outcome'
+Type='mamdani'
+Version=2.0
+NumInputs=6
+NumOutputs=1
+NumRules=11
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='Altitude'
+Range=[0 8848]
+NumMFs=3
+MF1='Low':'sigmf',[-0.01 2500]
+MF2='Meduim':'gauss2mf',[700 3100 700 4000]
+MF3='High':'sigmf',[0.009956 4700]
+
+[Input2]
+Name='Health_Score'
+Range=[0 1]
+NumMFs=3
+MF1='High_Risk':'sigmf',[-54.2 0.1]
+MF2='Medium_RIsk':'gauss2mf',[0.0548 0.155 0.0548 0.170822758352359]
+MF3='Low_RIsk':'sigmf',[57.1475450607627 0.26]
+
+[Input3]
+Name='Weather_Fuzzy'
+Range=[0 100]
+NumMFs=3
+MF1='Bad':'sigmf',[-0.417467871212603 10.8]
+MF2='Medium':'gauss2mf',[7.98 20.8 6.92 70.2143916097101]
+MF3='Good':'sigmf',[0.384547451676225 79.2]
+
+[Input4]
+Name='Heart_Rate'
+Range=[0 140]
+NumMFs=3
+MF1='Low':'sigmf',[-0.271 49.2]
+MF2='Normal':'gauss2mf',[10.3 60 10.3 100]
+MF3='High':'sigmf',[0.239397042239513 111]
+
+[Input5]
+Name='Respiratory_Rate'
+Range=[0 30]
+NumMFs=3
+MF1='Low':'sigmf',[-2.4 9.25]
+MF2='Normal':'gauss2mf',[2.247 12 2.247 16]
+MF3='High':'sigmf',[1.43 18.8]
+
+[Input6]
+Name='Oxymeter_Reading'
+Range=[0 100]
+NumMFs=2
+MF1='Abnormal':'sigmf',[-0.703 92.8]
+MF2='Normal':'sigmf',[0.893681805648671 92.2]
+
+[Output1]
+Name='To_Trek_or_not_to_trek'
+Range=[0 1]
+NumMFs=2
+MF1='No':'sigmf',[-52.7 0.15]
+MF2='Yes':'sigmf',[28 0.22]
+
+[Rules]
+0 1 0 0 0 0, 1 (1) : 1
+0 2 0 1 1 1, 1 (1) : 1
+0 2 0 3 1 1, 1 (1) : 1
+0 2 0 1 3 1, 1 (1) : 1
+0 2 0 3 3 1, 1 (1) : 1
+1 -1 0 2 2 0, 2 (1) : 1
+2 -1 -1 2 2 0, 2 (1) : 1
+3 3 3 2 2 2, 2 (1) : 1
+3 0 1 0 0 0, 1 (1) : 1
+0 0 0 3 3 0, 1 (1) : 2
+0 0 0 1 1 0, 1 (1) : 2

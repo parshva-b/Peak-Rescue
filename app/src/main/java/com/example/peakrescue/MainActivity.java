@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -29,28 +32,54 @@ public class MainActivity extends AppCompatActivity {
     private TextView weatherTextView;
     private Handler handler = new Handler(Looper.getMainLooper());
     private Timer timer = new Timer();
+    private EditText latitudeInput;
+    private EditText longitudeInput;
+    private EditText dateInput;
+    private Button getWeatherButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        latitudeInput = findViewById(R.id.latitude_input);
+        longitudeInput = findViewById(R.id.longitude_input);
+        dateInput = findViewById(R.id.date_input);
+        getWeatherButton = findViewById(R.id.get_weather_button);
         weatherTextView = findViewById(R.id.weather_text);
 
-        // Call API and display weather data
-        startPeriodicChecks();
+        getWeatherButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String latitude = latitudeInput.getText().toString();
+                String longitude = longitudeInput.getText().toString();
+                String date = dateInput.getText().toString();
+
+                // Call method to fetch weather data with provided location and date
+                new FetchWeatherTask().execute(latitude, longitude, date);
+            }
+        });
+//        startPeriodicChecks();
     }
 
-    private void startPeriodicChecks() {
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(() -> performWeatherCheck());
-            }
-        }, 0, 5000); // Check every 5 seconds (adjust as needed)
+    private void updateStoredDataPeriodically() {
+        if (isNetworkAvailable()) {
+            new FetchWeatherTask().execute();
+        }
     }
+//    private void startPeriodicChecks() {
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                handler.post(() -> {
+//                    performWeatherCheck();
+//                    updateStoredDataPeriodically();
+//                });
+//            }
+//        }, 0, 3600000); // 1 hour (adjust as needed, in milliseconds)
+//    }
 
     private void performWeatherCheck() {
+        Log.d("internetconn:", "val:"+isNetworkAvailable());
         if (isNetworkAvailable()) {
             // If there's internet, execute the AsyncTask to fetch weather data
             new FetchWeatherTask().execute();
@@ -83,15 +112,20 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("data", weatherData);
         editor.apply();
     }
-    private class FetchWeatherTask extends AsyncTask<Void, Void, String> {
+    private class FetchWeatherTask extends AsyncTask<String, Void, String> {
 
         @Override
-        protected String doInBackground(Void... voids) {
+        protected String doInBackground(String ...params) {
             String result = null;
+            String latitude = params[0];
+            String longitude = params[1];
+            String date = params[2];
             try {
                 if (isNetworkAvailable()) {
                     // Replace with your API endpoint URL
-                    String apiUrl = "https://api.tomorrow.io/v4/timelines?location=42.3478,-71.0466&fields=temperature,weatherCode,precipitationProbability,windSpeed,uvIndex,visibility&startTime=2023-12-01T00:00:00Z&endTime=2023-12-01T23:59:59Z&timezone=America/New_York&apikey=q4q65zHUQWmCS4w8MurpkU6JJewJhi5H";
+                    String apiUrl = "https://api.tomorrow.io/v4/timelines?location=" + latitude + "," + longitude +
+                            "&fields=temperature,weatherCode,precipitationProbability,windSpeed,uvIndex,visibility" +
+                            "&startTime=" + date + "T00:00:00Z&endTime=" + date + "T01:00:00Z&timezone=America/New_York&apikey=q4q65zHUQWmCS4w8MurpkU6JJewJhi5H";
                     Log.d("url: ", apiUrl);
                     URL url = new URL(apiUrl);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();

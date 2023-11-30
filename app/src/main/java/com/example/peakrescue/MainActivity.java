@@ -66,20 +66,8 @@ public class MainActivity extends AppCompatActivity {
             new FetchWeatherTask().execute();
         }
     }
-//    private void startPeriodicChecks() {
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                handler.post(() -> {
-//                    performWeatherCheck();
-//                    updateStoredDataPeriodically();
-//                });
-//            }
-//        }, 0, 3600000); // 1 hour (adjust as needed, in milliseconds)
-//    }
 
     private void performWeatherCheck() {
-        Log.d("internetconn:", "val:"+isNetworkAvailable());
         if (isNetworkAvailable()) {
             // If there's internet, execute the AsyncTask to fetch weather data
             new FetchWeatherTask().execute();
@@ -88,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             String storedWeatherData = getStoredWeatherData();
             if (!storedWeatherData.isEmpty()) {
                 // Display stored data from SharedPreferences
-                weatherTextView.setText("No internet signal\n" + storedWeatherData);
+                weatherTextView.setText("No internet signal displaying data from Shared Preferences\n" + storedWeatherData);
             } else {
                 // No stored data available in SharedPreferences
                 weatherTextView.setText("No internet signal\nNo stored data");
@@ -169,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 String storedWeatherData = getStoredWeatherData();
                 if (!storedWeatherData.isEmpty()) {
                     // Display stored data from SharedPreferences
-                    weatherTextView.setText("No internet signal\n" + storedWeatherData);
+                    weatherTextView.setText("No internet signal displaying data from Shared Preferences\n" + storedWeatherData);
                 } else {
                     // No stored data available in SharedPreferences
                     weatherTextView.setText("No internet signal\nNo stored data");

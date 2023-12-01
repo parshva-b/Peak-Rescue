@@ -30,3 +30,10 @@ Installation: Clone or download this repository.
 Configuration: Ensure necessary permissions for camera, accelerometer, and GPS usage.
 Integration: Integrate these components into your application.
 Testing: Conduct rigorous testing across various scenarios for accuracy and reliability.
+
+**Execution**
+Installation: Clone or download the app_debug.apk on your android device.
+Permission: Provide all the required permission or access.
+Hear rate: Click on "Get Heart Rate" button and follow the instructions to obtain heart rate.
+Respiratory rate: Click on "Get Respiratory Rate" button and follow the instructions to obtain heart rate.
+Altitude: Click on "Get Altitude" button to obtain altitude through GPS.

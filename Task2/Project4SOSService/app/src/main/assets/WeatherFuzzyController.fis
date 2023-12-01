@@ -1,0 +1,98 @@
+[System]
+Name='WeatherFuzzyController'
+Type='mamdani'
+Version=2.0
+NumInputs=8
+NumOutputs=1
+NumRules=18
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='Temperature'
+Range=[-40 50]
+NumMFs=3
+MF1='Low':'sigmf',[-0.25 10]
+MF2='High':'sigmf',[0.25 35]
+MF3='Medium':'dsigmf',[0.25 10 0.25 35]
+
+[Input2]
+Name='Humidity'
+Range=[0 100]
+NumMFs=3
+MF1='Low':'sigmf',[-0.25 30]
+MF2='High':'sigmf',[0.25 60]
+MF3='Medium':'dsigmf',[0.25 30 0.25 60]
+
+[Input3]
+Name='Precipitation_Probability'
+Range=[0 1]
+NumMFs=2
+MF1='Low':'sigmf',[-25 0.5]
+MF2='High':'sigmf',[25 0.5]
+
+[Input4]
+Name='Wind_Speed'
+Range=[0 35]
+NumMFs=2
+MF1='Low':'sigmf',[-0.25 15]
+MF2='High':'sigmf',[0.25 15]
+
+[Input5]
+Name='Visibility'
+Range=[0 15]
+NumMFs=2
+MF1='Good':'sigmf',[2 3]
+MF2='Poor':'sigmf',[-2 3]
+
+[Input6]
+Name='SleetIntensity'
+Range=[0 3]
+NumMFs=2
+MF1='Low':'sigmf',[-4 1]
+MF2='High':'sigmf',[4 1]
+
+[Input7]
+Name='SnowIntensity'
+Range=[0 10]
+NumMFs=2
+MF1='Low':'sigmf',[-1.4 4]
+MF2='High':'sigmf',[1.5 4]
+
+[Input8]
+Name='RainIntensity'
+Range=[0 10]
+NumMFs=2
+MF1='High':'sigmf',[1.4 4]
+MF2='Low':'sigmf',[-1.4 4.0203873598369]
+
+[Output1]
+Name='Severity'
+Range=[0 100]
+NumMFs=3
+MF1='Low':'sigmf',[0.15 67]
+MF2='High':'sigmf',[-0.15 35]
+MF3='Medium':'dsigmf',[0.22 35 0.22 67]
+
+[Rules]
+0 0 1 1 0 1 0 0, 1 (1) : 1
+0 0 1 1 0 0 1 0, 1 (1) : 1
+0 0 1 1 0 0 0 2, 1 (1) : 1
+0 0 2 1 1 0 0 1, 3 (1) : 1
+0 0 2 1 1 0 2 0, 3 (1) : 1
+0 0 2 1 1 2 0 0, 3 (1) : 1
+0 0 2 2 0 1 0 0, 3 (1) : 1
+0 0 2 2 0 2 0 0, 2 (1) : 1
+0 0 2 2 0 0 1 0, 3 (1) : 1
+0 0 2 2 0 0 2 0, 2 (1) : 1
+0 0 2 2 0 0 0 2, 3 (1) : 1
+0 0 2 2 0 0 0 1, 2 (1) : 1
+3 3 0 1 0 0 0 0, 1 (1) : 1
+1 -1 0 2 0 0 0 0, 2 (1) : 1
+1 1 0 2 0 0 0 0, 3 (1) : 1
+3 2 0 0 0 0 0 0, 3 (1) : 1
+2 2 0 0 0 0 0 0, 2 (1) : 1
+2 1 0 0 0 0 0 0, 3 (1) : 1

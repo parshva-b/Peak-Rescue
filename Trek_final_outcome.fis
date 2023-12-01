@@ -4,7 +4,7 @@ Type='mamdani'
 Version=2.0
 NumInputs=6
 NumOutputs=1
-NumRules=11
+NumRules=12
 AndMethod='min'
 OrMethod='max'
 ImpMethod='min'
@@ -77,3 +77,4 @@ MF2='Yes':'sigmf',[28 0.22]
 3 0 1 0 0 0, 1 (1) : 1
 0 0 0 3 3 0, 1 (1) : 2
 0 0 0 1 1 0, 1 (1) : 2
+0 0 0 0 0 1, 1 (1) : 1

@@ -32,21 +32,61 @@ public class fuzzycontroller {
         }
     }
 
-    protected double weatherFuzzy() {
-        return 0.0;
-    }
-
-    protected double healthFuzzy() {
-        return 0.0;
-    }
-
-    protected double finalfuzzy(InputStream is1, String fileName1, Double weatherFuzzy, Double healthScore) {
-
+    protected double weatherFuzzy(InputStream is1, String fileName1) {
         FIS fis = FIS.load(is1, true);
 
         // Error while loading?
         if (fis == null) {
             System.err.println("Can't load file: '" + fileName1 + "'");
+            return 0.0;
+        }
+        fis.setVariable("Temperature", -10);
+        fis.setVariable("Humidity", 20);
+        fis.setVariable("Precipitation_Probability", 1);
+        fis.setVariable("Wind_Speed", 8);
+        fis.setVariable("Visibility", 4);
+        fis.setVariable("SleetIntensity", 2);
+        fis.setVariable("SnowIntensity", 0);
+        fis.setVariable("RainIntensity",0);
+        Variable rule = fis.getVariable("Severity");
+        Double result = rule.getValue();
+        Log.i("Added FIS output", String.valueOf(rule.getValue()));
+        return result;
+
+    }
+
+    protected double healthFuzzy(InputStream is2, String fileName2) {
+
+        FIS fis = FIS.load(is2, true);
+
+        // Error while loading?
+        if (fis == null) {
+            System.err.println("Can't load file: '" + fileName2 + "'");
+            return 0.0;
+        }
+        fis.setVariable("insomnia", 0.1);
+        fis.setVariable("rapid_heart_rate", 0.1);
+        fis.setVariable("vomiting", 0.1);
+        fis.setVariable("nausea", 0.1);
+        fis.setVariable("fatigue", 0.1);
+        fis.setVariable("headache", 0.1);
+        fis.setVariable("shortness_of_breath", 0.1);
+        fis.setVariable("travel_to_high_altitude",0.1);
+
+        Variable rule = fis.getVariable("output1");
+        Double result = rule.getValue();
+        Log.i("Added FIS output", rule.toString());
+        Log.i("Added FIS output", String.valueOf(rule.getValue()));
+        return result;
+    }
+
+    protected double finalfuzzy(InputStream is3, String fileName3, Double weatherFuzzy, Double healthScore) {
+
+        FIS fis = FIS.load(is3, true);
+
+        // Error while loading?
+        if (fis == null) {
+            System.err.println("Can't load file: '" + fileName3 + "'");
             return 0.0;
         }
 

@@ -11,8 +11,8 @@
         android:layout_width="120dp"
         android:layout_height="116dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"/>
-<!--        android:src="@drawable/img" />-->
+        android:layout_marginTop="50dp"
+        android:src="@drawable/peakrescue" />
 
     <TextView
         android:id="@+id/projectNameTextView"

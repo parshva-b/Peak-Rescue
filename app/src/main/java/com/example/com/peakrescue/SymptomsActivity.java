@@ -2,6 +2,7 @@ package com.example.com.peakrescue;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -28,24 +29,20 @@ public class SymptomsActivity extends AppCompatActivity {
     Map<String, Float> Symptoms = new HashMap<>();                                                // Hashmap for storing symptoms
     ArrayAdapter<CharSequence> lv_adapter;                                                        // Local variable for array adapter for symptoms
     Spinner lv_symptoms_list;                                                                     // Local variable for spinner(drop down)
-    Button nextActivity;
+    Button bt_nextActivity;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_symptoms);
 
+        bt_nextActivity = findViewById(R.id.bt_next);
+
         Resources res = getResources();                                                           // Returns resource instance for this application
         lv_adapter = ArrayAdapter.createFromResource(this,
                 R.array.symptoms_array, android.R.layout.simple_spinner_item);
         lv_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);        // Assigning symptoms values to the spinner for dropdown
-        nextActivity.setOnClickListener(v -> {
-            try {
-                nextActivity();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
 
         for (String symp: res.getStringArray(R.array.symptoms_array) )
         {
@@ -56,10 +53,10 @@ public class SymptomsActivity extends AppCompatActivity {
 //      Final one element array required as from the inner class you can't assign value to a
 //      local variable (itself) declared somewhere in the enclosing class.
         final String[] selected_symptom = new String[1];
-        lv_rating = findViewById(R.id.rating_symptom);                                    // Rating for symptoms
+        lv_rating = findViewById(R.id.rating_symptom);                                            // Rating for symptoms
 
-        lv_symptoms_list = findViewById(R.id.sp_symptoms);                                // Symptoms dropdown
-        lv_symptoms_list.setAdapter(lv_adapter);                                          // setting the dropdown list for adapter
+        lv_symptoms_list = findViewById(R.id.sp_symptoms);                                        // Symptoms dropdown
+        lv_symptoms_list.setAdapter(lv_adapter);                                                  // setting the dropdown list for adapter
 
 //      Action on item selected from the drop down list
         lv_symptoms_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -90,14 +87,22 @@ public class SymptomsActivity extends AppCompatActivity {
             }
         });
 
+        bt_nextActivity.setOnClickListener(v -> {
+            try {
+                nextActivity();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
 
     }
 
     private void nextActivity() throws IOException {
         setSharedPrefData();
-        String fileName1 = "ToTrekOrNot.fcl";
+        String fileName1 = "WeatherFuzzy.fcl";
         InputStream is1 = getApplicationContext().getAssets().open(fileName1);
-        String fileName2 = "ToTrekOrNot.fcl";
+        String fileName2 = "HealthFuzzy.fcl";
         InputStream is2 = getApplicationContext().getAssets().open(fileName2);
         String fileName3 = "ToTrekOrNot.fcl";
         InputStream is3 = getApplicationContext().getAssets().open(fileName3);
@@ -105,14 +110,18 @@ public class SymptomsActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("allData", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         String allDataString = sharedPreferences.getString("allData", "{}");
+
         fuzzycontroller fc = new fuzzycontroller();
         fc.initiateFuzzy(allDataString);
-        Double weatherfuzzy = fc.weatherFuzzy();
-        Double healthScore = fc.healthFuzzy();
-        Double final_decision = fc.finalfuzzy(is3, fileName3, weatherfuzzy, healthScore);
-        setfinalSharedPrefData(weatherfuzzy, healthScore, final_decision);
-//        Intent i = new Intent(this, Fuzzylogic.class);
-//        startActivity(i);
+
+//        Double weatherfuzzy = fc.weatherFuzzy(is1, fileName1);
+//        Double healthScore = fc.healthFuzzy(is2, fileName2);
+//        Double final_decision = fc.finalfuzzy(is3, fileName3, weatherfuzzy, healthScore);
+        Double final_decision = 0.33;
+//        setfinalSharedPrefData(weatherfuzzy, healthScore, final_decision);
+        setfinalSharedPrefData(0.22, 0.22, final_decision);
+        Intent i = new Intent(this, FinalActivity.class);
+        startActivity(i);
     }
 
     private void setSharedPrefData() {
@@ -149,9 +158,9 @@ public class SymptomsActivity extends AppCompatActivity {
             JSONObject allData = new JSONObject(allDataString);
 
             // Update the attribute with the new value
-            allData.put("fuzzy1output", weatherfuzzy);
-            allData.put("fuzzy2output", healthScore);
-            allData.put("finalfuzzy", final_decision);
+            allData.put("fuzzy1output", String.valueOf(weatherfuzzy));
+            allData.put("fuzzy2output", String.valueOf(healthScore));
+            allData.put("finalfuzzy", String.valueOf(final_decision));
 
             // Save the updated JSON object as a string in SharedPreferences
             editor.putString("allData", allData.toString());

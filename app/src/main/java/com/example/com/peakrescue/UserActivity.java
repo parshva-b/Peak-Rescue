@@ -88,6 +88,7 @@ public class UserActivity extends AppCompatActivity {
         bt_get_altitude.setOnClickListener(v -> get_altitude());
         bt_measure_heart_rate.setOnClickListener(v -> measure_heart_rate());
         bt_measure_resp_rate.setOnClickListener(v -> measure_resp_rate());
+        bt_nextActivity.setOnClickListener(v -> bt_nextActivity());
 
         //      Recording the accelerometer values on sensor changes
         sensorEventListener = new SensorEventListener() {
@@ -120,7 +121,7 @@ public class UserActivity extends AppCompatActivity {
             }
         };
 
-        bt_nextActivity.setOnClickListener(v -> bt_nextActivity());
+
     }
 
     protected void initialize_widgets(){
@@ -156,7 +157,7 @@ public class UserActivity extends AppCompatActivity {
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);                // Get the accelerometer sensor
 
 //      For Next Activity
-        bt_nextActivity.findViewById(R.id.nextButton);
+        bt_nextActivity = findViewById(R.id.nextButton);
     }
 
     protected void get_altitude(){

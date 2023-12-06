@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button bt_new_trek;
     private Button bt_exst_trek;
-    SharedPreferences sharedPreferences = getSharedPreferences("allData", MODE_PRIVATE);
+    private Button bt_sos;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
         bt_new_trek = findViewById(R.id.startNewTrekButton);
         bt_exst_trek = findViewById(R.id.checkInExistingTrekButton);
+        bt_sos = findViewById(R.id.sosButton);
+        SharedPreferences sharedPreferences = getSharedPreferences("allData", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         // Create a JSON object for weather data
         JSONObject allData = new JSONObject();
@@ -80,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         bt_new_trek.setOnClickListener(v -> start_new_trek());
         bt_exst_trek.setOnClickListener(v -> check_exst_trek());
+        bt_sos.setOnClickListener(v -> sosActivity());
     }
 
     private void start_new_trek() {
@@ -89,6 +92,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void check_exst_trek() {
         Intent i = new Intent(this, activity_weather.class);
+        startActivity(i);
+    }
+
+    private void sosActivity() {
+        Intent i = new Intent(this, SOS_Activity.class);
         startActivity(i);
     }
 

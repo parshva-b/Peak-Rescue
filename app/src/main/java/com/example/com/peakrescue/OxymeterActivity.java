@@ -66,8 +66,20 @@ public class OxymeterActivity extends AppCompatActivity {
 
         connectBtButton.setOnClickListener(view -> toggleBluetooth());
         showDevicesButton.setOnClickListener(view -> showPairedBTDevices());
-        calcOxiButton.setOnClickListener(view -> calculateSpo2());
-        bt_nextButton.setOnClickListener(view -> nextActivity());
+        calcOxiButton.setOnClickListener(view -> {
+            try {
+                calculateSpo2();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        bt_nextButton.setOnClickListener(view -> {
+            try {
+                nextActivity();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -182,7 +194,7 @@ public class OxymeterActivity extends AppCompatActivity {
     }
 
     // Method to calculate Spo2 and store it in the database
-    private void calculateSpo2() {
+    private void calculateSpo2() throws InterruptedException {
         // Check if a Bluetooth device is connected
         if (!isBluetoothConnected) {
             // Display Toast if no Bluetooth device is connected
@@ -197,21 +209,25 @@ public class OxymeterActivity extends AppCompatActivity {
             // Simulate Spo2 calculation
             Random random = new Random();
             double spo2Value = random.nextGaussian() * 2 + 95;
-            spo2Value = Math.max(88, Math.min(spo2Value, 100));
-
+//            spo2Value = Math.max(88, Math.min(spo2Value, 100));
+            spo2Value = 95;
             // Store the Spo2 value in the database
 //            saveSpo2ToDatabase(spo2Value);
             formattedSpo2Value = String.format("%.2f", spo2Value);
             runOnUiThread(() -> spo2Text.setText("SpO2: " + formattedSpo2Value + "%"));
         }, 5000);
-
         nextActivity();
     }
 
-    private void nextActivity() {
-        setSharedPrefData();
-        Intent i = new Intent(this, UserActivity.class);
-        startActivity(i);
+    private void nextActivity() throws InterruptedException {
+        spo2Text.setText("SPO2: 95");
+        Handler handler = new Handler();
+        handler.postDelayed(()->{
+            setSharedPrefData();
+            Intent i = new Intent(this, UserActivity.class);
+            startActivity(i);
+        }, 3000);
+
     }
 
     private void setSharedPrefData() {

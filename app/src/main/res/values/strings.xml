@@ -3,16 +3,14 @@
     <string name="get_altitude">Get Altitude</string>
 
     <string-array name="symptoms_array">
-        <item>Nausea</item>
-        <item>Headache</item>
-        <item>Diarhea</item>
-        <item>Soar Throat</item>
-        <item>Fever</item>
-        <item>Muscle Ache</item>
-        <item>Loss of Smell or taste</item>
-        <item>Cough</item>
+        <item>Travel to High Altitude</item>
         <item>Shortness of Breath</item>
-        <item>Feeling Tired</item>
+        <item>Headache</item>
+        <item>Fatigue</item>
+        <item>Nausea</item>
+        <item>Vomiting</item>
+        <item>Rapid Heart Rate</item>
+        <item>Insomnia</item>
     </string-array>
 
 </resources>

@@ -45,7 +45,7 @@ public class SOS_Activity extends AppCompatActivity {
         String enteredPhoneNumber = phoneNumberEditText.getText().toString().trim();
 
         // If the entered number is empty or less than 10 digits, use the default number
-        String emergencyPhoneNumber = (enteredPhoneNumber.length() >= 10) ? enteredPhoneNumber : "6023730615";
+        String emergencyPhoneNumber = (enteredPhoneNumber.length() >= 10) ? enteredPhoneNumber : "2722761518";
 
         // Check for and request permissions if needed
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

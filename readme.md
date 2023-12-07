@@ -1,4 +1,4 @@
-##Peak Rescue Component: Health and Environmental Data Collection
+## Peak Rescue Component: Health and Environmental Data Collection
 This repository contains the essential components responsible for collecting heart rate, respiratory rate, and altitude data within the context of an Acute Mountain Sickness (AMS) prediction application for trekking activities.
 
 **Overview**

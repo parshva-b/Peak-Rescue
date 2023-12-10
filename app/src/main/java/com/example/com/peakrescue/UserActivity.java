@@ -76,7 +76,7 @@ public class UserActivity extends AppCompatActivity {
 
     // Next Activity
     private Button bt_nextActivity;
-    private String sp_heartrate, sp_respiratoryrate, sp_altitude;
+    private String sp_heartrate = "0", sp_respiratoryrate = "0", sp_altitude = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

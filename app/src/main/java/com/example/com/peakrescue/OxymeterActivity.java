@@ -221,6 +221,7 @@ public class OxymeterActivity extends AppCompatActivity {
 
     private void nextActivity() throws InterruptedException {
         spo2Text.setText("SPO2: 95");
+        formattedSpo2Value = String.valueOf(95);
         Handler handler = new Handler();
         handler.postDelayed(()->{
             setSharedPrefData();

@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import com.example.com.peakrescue.fuzzycontroller;
+import com.google.gson.Gson;
 
 public class SymptomsActivity extends AppCompatActivity {
 
@@ -114,12 +115,10 @@ public class SymptomsActivity extends AppCompatActivity {
         fuzzycontroller fc = new fuzzycontroller();
         fc.initiateFuzzy(allDataString);
 
-//        Double weatherfuzzy = fc.weatherFuzzy(is1, fileName1);
-//        Double healthScore = fc.healthFuzzy(is2, fileName2);
-//        Double final_decision = fc.finalfuzzy(is3, fileName3, weatherfuzzy, healthScore);
-        Double final_decision = 0.33;
-//        setfinalSharedPrefData(weatherfuzzy, healthScore, final_decision);
-        setfinalSharedPrefData(0.22, 0.22, final_decision);
+        Double weatherfuzzy = fc.weatherFuzzy(is1, fileName1);
+        Double healthScore = fc.healthFuzzy(is2, fileName2);
+        Double final_decision = fc.finalfuzzy(is3, fileName3, weatherfuzzy, healthScore);
+        setfinalSharedPrefData(weatherfuzzy, healthScore, final_decision);
         Intent i = new Intent(this, FinalActivity.class);
         startActivity(i);
     }
@@ -131,12 +130,15 @@ public class SymptomsActivity extends AppCompatActivity {
         // Retrieve existing weather data as a JSON string
         String allDataString = sharedPreferences.getString("allData", "{}");
 
+//        Gson gson = new Gson();
+//        String symptomsString = gson.toJson(Symptoms);
+
         try {
             // Convert the JSON string to a JSON object
             JSONObject allData = new JSONObject(allDataString);
 
             // Update the attribute with the new value
-            allData.put("symptoms", new JSONObject(Symptoms));
+            allData.put("symptoms", new JSONObject(Symptoms).toString());
 
             // Save the updated JSON object as a string in SharedPreferences
             editor.putString("allData", allData.toString());

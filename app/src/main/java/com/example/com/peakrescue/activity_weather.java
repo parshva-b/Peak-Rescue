@@ -42,7 +42,7 @@ public class activity_weather extends AppCompatActivity {
     private EditText dateInput;
     private Button bt_nextButton;
     private String weatherInfo;
-
+    private String weatherResult;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -145,6 +145,7 @@ public class activity_weather extends AppCompatActivity {
             }    catch (IOException e) {
                 e.printStackTrace();
             }
+            weatherResult = result;
             return result;
         }
 
@@ -153,7 +154,6 @@ public class activity_weather extends AppCompatActivity {
             if (result != null) {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-
                     // Get the necessary weather information from the JSON response
                     weatherInfo = jsonObject.toString(); // Replace with the specific data you want to display
 
@@ -200,7 +200,7 @@ public class activity_weather extends AppCompatActivity {
             JSONObject allData = new JSONObject(allDataString);
 
             // Update the attribute with the new value
-            allData.put("weather", weatherInfo);
+            allData.put("weather", weatherResult);
 
             // Save the updated JSON object as a string in SharedPreferences
             editor.putString("allData", allData.toString());

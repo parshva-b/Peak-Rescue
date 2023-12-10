@@ -11,11 +11,15 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class fuzzycontroller {
-    String heartrate, respiratoryrate, spo2, altitude, weather, symptoms;
+    String heartrate, respiratoryrate, spo2, altitude, weather;
+    JSONObject symptoms;
+    HashMap<String, String> symphashMap = new HashMap<>();
     protected void initiateFuzzy(String allDataString ) {
         try {
             // Convert the JSON string to a JSON object
@@ -25,9 +29,22 @@ public class fuzzycontroller {
             spo2 = String.valueOf(allData.get("spo2"));
             altitude = String.valueOf(allData.get("altitude"));
             weather = String.valueOf(allData.get("weather"));
-            symptoms = String.valueOf(allData.get("symptoms"));
+            symptoms = new JSONObject(String.valueOf(allData.get("symptoms")));
 
-        } catch (JSONException e) {
+            // Convert JSONObject to HashMap
+
+            // Iterate through the keys and values in the JSONObject
+            Iterator<String> keys = symptoms.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                String value = symptoms.getString(key);
+                symphashMap.put(key, value);
+
+//            Log.i("Symptoms", symptoms);
+//            System.out.println(symptoms);
+
+            }
+        }catch(JSONException e){
             e.printStackTrace();
         }
     }
@@ -40,14 +57,22 @@ public class fuzzycontroller {
             System.err.println("Can't load file: '" + fileName1 + "'");
             return 0.0;
         }
-        fis.setVariable("Temperature", -10);
-        fis.setVariable("Humidity", 20);
-        fis.setVariable("Precipitation_Probability", 1);
-        fis.setVariable("Wind_Speed", 8);
-        fis.setVariable("Visibility", 4);
-        fis.setVariable("SleetIntensity", 2);
-        fis.setVariable("SnowIntensity", 0);
-        fis.setVariable("RainIntensity",0);
+
+        WeatherData wData = null;
+        try {
+            wData = WeatherDataParser.parseWeatherData(weather);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        fis.setVariable("Temperature", wData.getTemperature());
+        fis.setVariable("Humidity", wData.getHumidity());
+        fis.setVariable("Precipitation_Probability", wData.getPrecipitationProbability());
+        fis.setVariable("Wind_Speed", wData.getWindSpeed());
+        fis.setVariable("Visibility", wData.getVisibility());
+        fis.setVariable("SleetIntensity", wData.getSleetIntensity());
+        fis.setVariable("SnowIntensity", wData.getSnowIntensity());
+        fis.setVariable("RainIntensity", wData.getRainIntensity());
         Variable rule = fis.getVariable("Severity");
         Double result = rule.getValue();
         Log.i("Added FIS output", String.valueOf(rule.getValue()));
@@ -64,14 +89,27 @@ public class fuzzycontroller {
             System.err.println("Can't load file: '" + fileName2 + "'");
             return 0.0;
         }
-        fis.setVariable("insomnia", 0.1);
-        fis.setVariable("rapid_heart_rate", 0.1);
-        fis.setVariable("vomiting", 0.1);
-        fis.setVariable("nausea", 0.1);
-        fis.setVariable("fatigue", 0.1);
-        fis.setVariable("headache", 0.1);
-        fis.setVariable("shortness_of_breath", 0.1);
-        fis.setVariable("travel_to_high_altitude",0.1);
+
+//        <string-array name="symptoms_array">
+//        <item>Travel to High Altitude</item>
+//        <item>Shortness of Breath</item>
+//        <item>Headache</item>
+//        <item>Fatigue</item>
+//        <item>Nausea</item>
+//        <item>Vomiting</item>
+//        <item>Rapid Heart Rate</item>
+//        <item>Insomnia</item>
+//    </string-array>
+
+
+        fis.setVariable("insomnia", Double.parseDouble(symphashMap.get("Insomnia")));
+        fis.setVariable("rapid_heart_rate", Double.parseDouble(symphashMap.get("Rapid Heart Rate")));
+        fis.setVariable("vomiting", Double.parseDouble(symphashMap.get("Vomiting")));
+        fis.setVariable("nausea", Double.parseDouble(symphashMap.get("Nausea")));
+        fis.setVariable("fatigue", Double.parseDouble(symphashMap.get("Fatigue")));
+        fis.setVariable("headache", Double.parseDouble(symphashMap.get("Headache")));
+        fis.setVariable("shortness_of_breath", Double.parseDouble(symphashMap.get("Shortness of Breath")));
+        fis.setVariable("travel_to_high_altitude",Double.parseDouble(symphashMap.get("Travel to High Altitude")));
 
         Variable rule = fis.getVariable("output1");
         Double result = rule.getValue();

@@ -1,0 +1,93 @@
+// WeatherFuzzyController.fcl
+
+FUNCTION_BLOCK WeatherFuzzyController
+VAR_INPUT
+    Temperature : REAL;
+    Humidity : REAL;
+    Precipitation_Probability : REAL;
+    Wind_Speed : REAL;
+    Visibility : REAL;
+    SleetIntensity : REAL;
+    SnowIntensity : REAL;
+    RainIntensity : REAL;
+END_VAR
+
+VAR_OUTPUT
+    Severity : REAL;
+END_VAR
+
+FUZZIFY Temperature
+    TERM Low := sigm -0.25 10;
+    TERM High := sigm 0.25 35;
+    TERM Medium := gbell 10 0.25 22.5;
+END_FUZZIFY
+
+FUZZIFY Humidity
+    TERM Low := sigm -0.25 30;
+    TERM High := sigm 0.25 60;
+    TERM Medium := gbell 10 0.25 45;
+END_FUZZIFY
+
+FUZZIFY Precipitation_Probability
+    TERM Low := sigm -25 0.5;
+    TERM High := sigm 25 0.5;
+END_FUZZIFY
+
+FUZZIFY Wind_Speed
+    TERM Low := sigm -0.25 15;
+    TERM High := sigm 0.25 15;
+END_FUZZIFY
+
+FUZZIFY Visibility
+    TERM Good := sigm 2 3;
+    TERM Poor := sigm -2 3;
+END_FUZZIFY
+
+FUZZIFY SleetIntensity
+    TERM Low := sigm -4 1;
+    TERM High := sigm 4 1;
+END_FUZZIFY
+
+FUZZIFY SnowIntensity
+    TERM Low := sigm -1.4 4;
+    TERM High := sigm 1.5 4;
+END_FUZZIFY
+
+FUZZIFY RainIntensity
+    TERM High := sigm 1.4 4;
+    TERM Low := sigm -1.4 4;
+END_FUZZIFY
+
+DEFUZZIFY Severity
+    TERM Low := sigm 0.15 67;
+    TERM High := sigm -0.15 35;
+    TERM Medium := gbell 20 0.22 52;
+    METHOD : COG;
+END_DEFUZZIFY
+
+RULEBLOCK Mamdani
+    AND : MIN;
+    OR : MAX;
+    ACT : MIN;
+    ACCU : MAX;
+    RULE 1 : IF (Precipitation_Probability IS Low) AND (Wind_Speed IS Low) AND (SleetIntensity IS Low) THEN (Severity IS Low);
+    RULE 2 : IF (Precipitation_Probability IS Low) AND (Wind_Speed IS Low) AND (SnowIntensity IS Low) THEN (Severity IS Low);
+    RULE 3 : IF (Precipitation_Probability IS Low) AND (Wind_Speed IS Low) AND (RainIntensity IS Low) THEN (Severity IS Low);
+    RULE 4 : IF (Precipitation_Probability IS High) AND (Wind_Speed IS Low) AND (Visibility IS Good) AND (RainIntensity IS High) THEN (Severity IS Medium);
+    RULE 5 : IF (Precipitation_Probability IS High) AND (Wind_Speed IS Low) AND (Visibility IS Good) AND (SnowIntensity IS High) THEN (Severity IS Medium);
+    RULE 6 : IF (Precipitation_Probability IS High) AND (Wind_Speed IS Low) AND (Visibility IS Good) AND (SleetIntensity IS High) THEN (Severity IS Medium);
+    RULE 7 : IF (Precipitation_Probability IS High) AND (Wind_Speed IS High) AND (SleetIntensity IS Low) THEN (Severity IS Medium);
+    RULE 8 : IF (Precipitation_Probability IS High) AND (Wind_Speed IS High) AND (SleetIntensity IS High) THEN (Severity IS High);
+    RULE 9 : IF (Precipitation_Probability IS High) AND (Wind_Speed IS High) AND (SnowIntensity IS Low) THEN (Severity IS Medium);
+    RULE 10 : IF (Precipitation_Probability IS High) AND (Wind_Speed IS High) AND (SnowIntensity IS High) THEN (Severity IS High);
+    RULE 11 : IF (Precipitation_Probability IS High) AND (Wind_Speed IS High) AND (RainIntensity IS Low) THEN (Severity IS Medium);
+    RULE 12 : IF (Precipitation_Probability IS High) AND (Wind_Speed IS High) AND (RainIntensity IS High) THEN (Severity IS High);
+    RULE 13 : IF (Temperature IS Medium) AND (Humidity IS Medium) AND (Wind_Speed IS Low) THEN (Severity IS Low);
+    RULE 14 : IF (Temperature IS Low) AND (Humidity IS NOT Low) AND (Wind_Speed IS High) THEN (Severity IS High);
+    RULE 15 : IF (Temperature IS Low) AND (Humidity IS Low) AND (Wind_Speed IS High) THEN (Severity IS Medium);
+    RULE 16 : IF (Temperature IS Medium) AND (Humidity IS High) THEN (Severity IS Medium);
+    RULE 17 : IF (Temperature IS High) AND (Humidity IS High) THEN (Severity IS High);
+    RULE 18 : IF (Temperature IS High) AND (Humidity IS Low) THEN (Severity IS Medium);
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

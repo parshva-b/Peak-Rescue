@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentStart="false"
+    android:gravity="end"
+    android:id="@+id/page2">
+
+    <TextView
+        android:id="@+id/tv_symptom_logging_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Symptoms"
+        android:textSize="16sp" />
+
+    <Spinner
+        android:id="@+id/sp_symptoms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_symptom_logging_page"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="148dp"
+        android:gravity="center_vertical"
+        android:minHeight="48dp"
+        android:spinnerMode="dropdown"
+        tools:ignore="UnknownId,SpeakableTextPresentCheck" />
+
+    <RatingBar
+        android:id="@+id/rating_symptom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sp_symptoms"
+        android:layout_alignParentEnd="false"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/bt_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rating_symptom"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="94dp"
+        android:text="Next" />
+</RelativeLayout>

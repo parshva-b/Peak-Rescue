@@ -1,0 +1,75 @@
+// Trek_final_outcome.fcl
+
+FUNCTION_BLOCK Trek_final_outcome
+VAR_INPUT
+    Altitude: REAL;
+    Health_Score: REAL;
+    Weather_Fuzzy: REAL;
+    Heart_Rate: REAL;
+    Respiratory_Rate: REAL;
+    Oxymeter_Reading: REAL;
+END_VAR
+
+VAR_OUTPUT
+    To_Trek_or_not_to_trek: REAL;
+END_VAR
+
+FUZZIFY Altitude
+    TERM Low := sigm -0.01 2500;
+    TERM Medium := gbell 450 700 3550;
+    TERM High := sigm 0.009956 4700;
+END_FUZZIFY
+
+FUZZIFY Health_Score
+    TERM High_Risk := sigm -54.2 0.1;
+    TERM Medium_RIsk := gbell 0.058 0.0548 0.1128;
+    TERM Low_RIsk := sigm 57.1475450607627 0.26;
+END_FUZZIFY
+
+FUZZIFY Weather_Fuzzy
+    TERM Bad := sigm -0.417467871212603 10.8;
+    TERM Medium := gbell 24.70715 7 45.50715;
+    TERM Good := sigm 0.384547451676225 79.2;
+END_FUZZIFY
+
+FUZZIFY Heart_Rate
+    TERM Low := sigm -0.271 49.2;
+    TERM Normal := gbell 20 10.3 80;
+    TERM High := sigm 0.239397042239513 111;
+END_FUZZIFY
+
+FUZZIFY Respiratory_Rate
+    TERM Low := sigm -2.4 9.25;
+    TERM Normal := gbell 2 2.247 14;
+    TERM High := sigm 1.43 18.8;
+END_FUZZIFY
+
+FUZZIFY Oxymeter_Reading
+    TERM Abnormal := sigm -0.703 92.8;
+    TERM Normal := sigm 0.893681805648671 92.2;
+END_FUZZIFY
+
+DEFUZZIFY To_Trek_or_not_to_trek
+    TERM No := sigm -52.7 0.15;
+    TERM Yes := sigm 28 0.22;
+END_DEFUZZIFY
+
+RULEBLOCK No1
+    AND: MIN;
+    ACT: MIN;
+    ACCU: MAX;
+    RULE 0: IF Altitude IS Low AND Health_Score IS High_Risk AND Weather_Fuzzy IS Bad AND Heart_Rate IS Low AND Respiratory_Rate IS Low AND Oxymeter_Reading IS Abnormal THEN To_Trek_or_not_to_trek IS No;
+    RULE 1: IF Altitude IS Low AND Health_Score IS Medium_RIsk AND Weather_Fuzzy IS Bad AND Heart_Rate IS Low AND Respiratory_Rate IS Low AND Oxymeter_Reading IS Abnormal THEN To_Trek_or_not_to_trek IS No;
+    RULE 2: IF Altitude IS Low AND Health_Score IS Medium_RIsk AND Weather_Fuzzy IS Medium AND Heart_Rate IS Low AND Respiratory_Rate IS Low AND Oxymeter_Reading IS Abnormal THEN To_Trek_or_not_to_trek IS No;
+    RULE 3: IF Altitude IS Low AND Health_Score IS Medium_RIsk AND Weather_Fuzzy IS Good AND Heart_Rate IS Low AND Respiratory_Rate IS Low AND Oxymeter_Reading IS Abnormal THEN To_Trek_or_not_to_trek IS No;
+    RULE 4: IF Altitude IS Low AND Health_Score IS Medium_RIsk AND Weather_Fuzzy IS Medium AND Heart_Rate IS High AND Respiratory_Rate IS High AND Oxymeter_Reading IS Normal THEN To_Trek_or_not_to_trek IS No;
+    RULE 5: IF Altitude IS Medium AND Health_Score IS Medium_RIsk AND Weather_Fuzzy IS Medium AND Heart_Rate IS High AND Respiratory_Rate IS High AND Oxymeter_Reading IS Normal THEN To_Trek_or_not_to_trek IS Yes;
+    RULE 6: IF Altitude IS High AND Health_Score IS Medium_RIsk AND Weather_Fuzzy IS Medium AND Heart_Rate IS High AND Respiratory_Rate IS High AND Oxymeter_Reading IS Normal THEN To_Trek_or_not_to_trek IS Yes;
+    RULE 7: IF Altitude IS High AND Health_Score IS High_Risk AND Weather_Fuzzy IS Good AND Heart_Rate IS High AND Respiratory_Rate IS High AND Oxymeter_Reading IS Normal THEN To_Trek_or_not_to_trek IS Yes;
+    RULE 8: IF Altitude IS High AND Health_Score IS Low_RIsk AND Weather_Fuzzy IS Bad AND Heart_Rate IS Low AND Respiratory_Rate IS Low AND Oxymeter_Reading IS Abnormal THEN To_Trek_or_not_to_trek IS No;
+    RULE 9: IF Altitude IS Low AND Health_Score IS Low_RIsk AND Weather_Fuzzy IS Good AND Heart_Rate IS High AND Respiratory_Rate IS High AND Oxymeter_Reading IS Abnormal THEN To_Trek_or_not_to_trek IS No;
+    RULE 10: IF Altitude IS Low AND Health_Score IS Low_RIsk AND Weather_Fuzzy IS Medium AND Heart_Rate IS Normal AND Respiratory_Rate IS Normal AND Oxymeter_Reading IS Normal THEN To_Trek_or_not_to_trek IS Yes;
+    RULE 11: IF Altitude IS Low AND Health_Score IS Low_RIsk AND Weather_Fuzzy IS Bad AND Heart_Rate IS Low AND Respiratory_Rate IS Low AND Oxymeter_Reading IS Abnormal THEN To_Trek_or_not_to_trek IS No;
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

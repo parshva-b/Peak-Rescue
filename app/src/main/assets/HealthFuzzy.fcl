@@ -1,0 +1,102 @@
+FUNCTION_BLOCK symptomsAMS
+VAR_INPUT
+    travel_to_high_altitude: REAL;
+    shortness_of_breath: REAL;
+    headache: REAL;
+    fatigue: REAL;
+    nausea: REAL;
+    vomiting: REAL;
+    rapid_heart_rate: REAL;
+    insomnia: REAL;
+END_VAR
+
+VAR_OUTPUT
+    output1: REAL;
+END_VAR
+
+FUZZIFY travel_to_high_altitude
+    TERM recent := trian -2.08333333333333 0 2.08333333333333;
+    TERM a_while_ago := trian 0.416666666666667 2.5 4.58333333333333;
+    TERM never := trian 2.91666666666667 5 7.08333333333333;
+END_FUZZIFY
+
+FUZZIFY shortness_of_breath
+    TERM high := trian -2.08333333333333 0 2.08333333333333;
+    TERM med := trian 0.416666666666667 2.5 4.58333333333333;
+    TERM low := trian 2.91666666666667 5 7.08333333333333;
+END_FUZZIFY
+
+FUZZIFY headache
+    TERM high := trian -2.08333333333333 0 2.08333333333333;
+    TERM med := trian 0.416666666666667 2.5 4.58333333333333;
+    TERM low := trian 2.91666666666667 5 7.08333333333333;
+END_FUZZIFY
+
+FUZZIFY fatigue
+    TERM high := trian -2.08333333333333 0 2.08333333333333;
+    TERM med := trian 0.416666666666667 2.5 4.58333333333333;
+    TERM low := trian 2.91666666666667 5 7.08333333333333;
+END_FUZZIFY
+
+FUZZIFY nausea
+    TERM high := trian -2.08333333333333 0 2.08333333333333;
+    TERM med := trian 0.416666666666667 2.5 4.58333333333333;
+    TERM low := trian 2.91666666666667 5 7.08333333333333;
+END_FUZZIFY
+
+FUZZIFY vomiting
+    TERM high := trian -2.08333333333333 0 2.08333333333333;
+    TERM med := trian 0.416666666666667 2.5 4.58333333333333;
+    TERM low := trian 2.91666666666667 5 7.08333333333333;
+END_FUZZIFY
+
+FUZZIFY rapid_heart_rate
+    TERM high := trian -2.08333333333333 0 2.08333333333333;
+    TERM med := trian 0.416666666666667 2.5 4.58333333333333;
+    TERM low := trian 2.91666666666667 5 7.08333333333333;
+END_FUZZIFY
+
+FUZZIFY insomnia
+    TERM high := trian -2.08333333333333 0 2.08333333333333;
+    TERM med := trian 0.416666666666667 2.5 4.58333333333333;
+    TERM low := trian 2.91666666666667 5 7.08333333333333;
+END_FUZZIFY
+
+DEFUZZIFY output1
+    TERM high_risk := trian -0.416666666666667 0 0.416666666666667;
+    TERM medium_risk := trian 0.0833333333333333 0.5 0.916666666666667;
+    TERM low_risk := trian 0.583333333333333 1 1.41666666666667;
+END_DEFUZZIFY
+
+RULEBLOCK No1
+    AND: MIN;
+    ACT: MIN;
+    OR: MAX;
+    ACCU: MAX;
+    RULE 1: IF travel_to_high_altitude IS recent AND shortness_of_breath IS high AND headache IS high AND fatigue IS high AND nausea IS high AND vomiting IS high AND rapid_heart_rate IS high AND insomnia IS high THEN output1 IS high_risk;
+    RULE 2: IF travel_to_high_altitude IS a_while_ago AND shortness_of_breath IS low AND headache IS low AND fatigue IS low AND nausea IS low AND vomiting IS low AND rapid_heart_rate IS low AND insomnia IS low THEN output1 IS low_risk;
+    RULE 3: IF travel_to_high_altitude IS recent AND shortness_of_breath IS low AND headache IS low AND fatigue IS low AND nausea IS low AND vomiting IS low AND rapid_heart_rate IS low AND insomnia IS low THEN output1 IS low_risk;
+    RULE 4: IF travel_to_high_altitude IS a_while_ago AND shortness_of_breath IS med AND headache IS med AND fatigue IS med AND nausea IS low AND vomiting IS low AND rapid_heart_rate IS low AND insomnia IS low THEN output1 IS medium_risk;
+    RULE 5: IF travel_to_high_altitude IS never AND shortness_of_breath IS high AND headache IS high AND fatigue IS high AND nausea IS high AND vomiting IS high AND rapid_heart_rate IS high AND insomnia IS high THEN output1 IS high_risk;
+    RULE 6: IF travel_to_high_altitude IS never AND shortness_of_breath IS med AND headache IS med AND fatigue IS med AND nausea IS med AND vomiting IS med AND rapid_heart_rate IS med AND insomnia IS med THEN output1 IS medium_risk;
+    RULE 7: IF travel_to_high_altitude IS never AND shortness_of_breath IS low AND headache IS low AND fatigue IS low AND nausea IS low AND vomiting IS low AND rapid_heart_rate IS low AND insomnia IS low THEN output1 IS low_risk;
+    RULE 8: IF travel_to_high_altitude IS recent AND shortness_of_breath IS high AND headache IS low AND fatigue IS low AND nausea IS low AND vomiting IS low AND rapid_heart_rate IS low AND insomnia IS low THEN output1 IS low_risk;
+    RULE 9: IF travel_to_high_altitude IS a_while_ago AND shortness_of_breath IS low AND headache IS low AND fatigue IS low AND nausea IS low AND vomiting IS low AND rapid_heart_rate IS low AND insomnia IS low THEN output1 IS low_risk;
+    RULE 10: IF travel_to_high_altitude IS a_while_ago AND shortness_of_breath IS high AND headache IS low AND fatigue IS low AND nausea IS low AND vomiting IS low AND rapid_heart_rate IS low AND insomnia IS low THEN output1 IS low_risk;
+    RULE 11: IF travel_to_high_altitude IS a_while_ago AND shortness_of_breath IS low AND headache IS high AND fatigue IS low AND nausea IS low AND vomiting IS low AND rapid_heart_rate IS low AND insomnia IS low THEN output1 IS low_risk;
+    RULE 12: IF travel_to_high_altitude IS a_while_ago AND shortness_of_breath IS low AND headache IS low AND fatigue IS high AND nausea IS low AND vomiting IS low AND rapid_heart_rate IS low AND insomnia IS low THEN output1 IS low_risk;
+    RULE 13: IF travel_to_high_altitude IS a_while_ago AND shortness_of_breath IS low AND headache IS low AND fatigue IS low AND nausea IS high AND vomiting IS low AND rapid_heart_rate IS low AND insomnia IS low THEN output1 IS low_risk;
+    RULE 14: IF travel_to_high_altitude IS a_while_ago AND shortness_of_breath IS low AND headache IS low AND fatigue IS low AND nausea IS low AND vomiting IS high AND rapid_heart_rate IS low AND insomnia IS low THEN output1 IS low_risk;
+    RULE 15: IF travel_to_high_altitude IS a_while_ago AND shortness_of_breath IS low AND headache IS low AND fatigue IS low AND nausea IS low AND vomiting IS low AND rapid_heart_rate IS high AND insomnia IS low THEN output1 IS low_risk;
+    RULE 16: IF travel_to_high_altitude IS recent AND shortness_of_breath IS med AND headache IS low AND fatigue IS low AND nausea IS low AND vomiting IS low AND rapid_heart_rate IS low AND insomnia IS low THEN output1 IS low_risk;
+    RULE 17: IF travel_to_high_altitude IS recent AND shortness_of_breath IS low AND headache IS med AND fatigue IS low AND nausea IS low AND vomiting IS low AND rapid_heart_rate IS low AND insomnia IS low THEN output1 IS low_risk;
+    RULE 18: IF travel_to_high_altitude IS recent AND shortness_of_breath IS low AND headache IS low AND fatigue IS med AND nausea IS low AND vomiting IS low AND rapid_heart_rate IS low AND insomnia IS low THEN output1 IS low_risk;
+    RULE 19: IF travel_to_high_altitude IS recent AND shortness_of_breath IS low AND headache IS low AND fatigue IS low AND nausea IS med AND vomiting IS low AND rapid_heart_rate IS low AND insomnia IS low THEN output1 IS low_risk;
+    RULE 20: IF travel_to_high_altitude IS recent AND shortness_of_breath IS low AND headache IS low AND fatigue IS low AND nausea IS low AND vomiting IS med AND rapid_heart_rate IS low AND insomnia IS low THEN output1 IS low_risk;
+    RULE 21: IF travel_to_high_altitude IS recent AND shortness_of_breath IS low AND headache IS low AND fatigue IS low AND nausea IS low AND vomiting IS low AND rapid_heart_rate IS med AND insomnia IS low THEN output1 IS medium_risk;
+    RULE 22: IF travel_to_high_altitude IS recent AND shortness_of_breath IS low AND headache IS low AND fatigue IS low AND nausea IS low AND vomiting IS low AND rapid_heart_rate IS low AND insomnia IS med THEN output1 IS high_risk;
+    RULE 23: IF travel_to_high_altitude IS recent AND shortness_of_breath IS low AND headache IS low AND fatigue IS low AND nausea IS low AND vomiting IS low AND rapid_heart_rate IS low AND insomnia IS low THEN output1 IS low_risk;
+    RULE 24: IF travel_to_high_altitude IS a_while_ago AND shortness_of_breath IS low AND headache IS low AND fatigue IS low AND nausea IS low AND vomiting IS low AND rapid_heart_rate IS low AND insomnia IS low THEN output1 IS low_risk;
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Peak Rescue</string>
+    <string name="get_altitude">Get Altitude</string>
+
+    <string-array name="symptoms_array">
+        <item>Travel to High Altitude</item>
+        <item>Shortness of Breath</item>
+        <item>Headache</item>
+        <item>Fatigue</item>
+        <item>Nausea</item>
+        <item>Vomiting</item>
+        <item>Rapid Heart Rate</item>
+        <item>Insomnia</item>
+    </string-array>
+
+</resources>
